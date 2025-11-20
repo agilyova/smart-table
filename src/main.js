@@ -18,18 +18,6 @@ import {initSearching} from "./components/searching.js";
 // Исходные данные используемые в render()
 const {data, ...indexes} = initData(sourceData);
 
-function getMinMaxTotalValues(data) {
-  let min = data[0].total;
-  let max = data[0].total;
-
-  data.forEach(el => {
-    min = Math.min(el.total, min);
-    max = Math.max(el.total, max);
-  });
-
-  return {min, max};
-}
-
 /**
  * Сбор и обработка полей из таблицы
  * @returns {Object}
@@ -38,9 +26,8 @@ function collectState() {
   const state = processFormData(new FormData(sampleTable.container));
   const rowsPerPage = parseInt(state.rowsPerPage);    // приведём количество страниц к числу
   const page = parseInt(state.page ?? 1);// номер страницы по умолчанию 1 и тоже число
-  const minMaxTotal = getMinMaxTotalValues(data);
-  const totalFrom = parseFloat(state.totalFrom.replace(',', '.') || minMaxTotal.min);
-  const totalTo = parseFloat(state.totalTo.replace(',', '.') || minMaxTotal.max);
+  const totalFrom = parseFloat(state.totalFrom.replace(',', '.'));
+  const totalTo = parseFloat(state.totalTo.replace(',', '.'));
   const total = [totalFrom, totalTo];
 
   return {                                            // расширьте существующий return вот так
